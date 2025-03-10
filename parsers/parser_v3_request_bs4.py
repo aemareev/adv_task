@@ -11,10 +11,8 @@ from parsers.base_parser import BaseParser
 
 class IndexRequestsParser(BaseParser):
     """
-    Класс для парсинга индексов с сайта tbank.ru/invest/indexes/TIPOUS.
+    Парсер индексов с сайта tbank.ru/invest/indexes с использованием Requests.
     """
-    INDEX = 'TIPOUS'
-    URL = 'https://www.tbank.ru/invest/indexes/TIPOUS/'
 
     def __init__(self, index: str, period: str = 'year'):
         """
@@ -31,6 +29,12 @@ class IndexRequestsParser(BaseParser):
         soup = BeautifulSoup(response.content, "html.parser")
 
     def get_data(self, last: int = 0) -> list[IndexDataPoint]:
+        """
+        Получает данные по индексу с HTML страницы.
+
+        :param last: Количество последних записей, которые нужно вернуть. Если 0, возвращает все данные.
+        :return: Список объектов IndexDataPoint.
+        """
         try:
             response = requests.get(self.url, timeout=10)
             response.raise_for_status()
